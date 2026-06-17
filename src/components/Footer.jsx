@@ -20,7 +20,7 @@ export default function Footer() {
             className="mt-3 text-slate-400 max-w-md text-sm md:text-base"
             style={{ fontFamily: "'DM Sans', sans-serif" }}
           >
-            creating new advanced systems one step at a time .
+            Becomming Better Every Single Day.
           </p>
 
           {/* Divider */}

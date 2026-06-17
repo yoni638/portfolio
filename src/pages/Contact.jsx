@@ -1,6 +1,24 @@
 import { useEffect, useRef, useState } from "react";
-import { SiWhatsapp, SiTelegram, SiGmail, SiLinkedin } from "react-icons/si";
+import { SiWhatsapp, SiTelegram, SiGmail } from "react-icons/si";
 import { HiPhone } from "react-icons/hi";
+
+// Custom LinkedIn icon since SiLinkedin is not available
+function SiLinkedin({ size, color }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect x="2" y="2" width="20" height="20" rx="2" fill={color} fillOpacity="0.2"/>
+      <path d="M7 17H5V10H7V17Z" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+      <path d="M5 8C5.55228 8 6 7.55228 6 7C6 6.44772 5.55228 6 5 6C4.44772 6 4 6.44772 4 7C4 7.55228 4.44772 8 5 8Z" fill={color} fillOpacity="0.8"/>
+      <path d="M14 17H12V13.5C12 12.6716 11.8284 12.5 11 12.5C10.1716 12.5 10 12.6716 10 13.5V17H8V10H10V11C10.5 10.5 11 10 12 10C13.5 10 14 11.5 14 13.5V17Z" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+    </svg>
+  );
+}
 
 function useScrollReveal(threshold = 0.1) {
   const ref = useRef(null);

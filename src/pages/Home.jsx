@@ -110,7 +110,7 @@ export default function Home() {
   const role = useTypewriter([
     "Full Stack Developer",
     "Junior Data Analyst",
-    "Junior IT Support ",
+    "IT Support ",
   ]);
 
   function handleIntroDone() {
@@ -330,7 +330,7 @@ export default function Home() {
            
             <div className="relative photo-float" style={{ width: "100%" }}>
               <img
-                src="/src/assets/myImage.png"
+                src="/myImage.png"
                 alt="Yoni.G"
                 draggable={false}
                 className="w-full object-contain select-none"

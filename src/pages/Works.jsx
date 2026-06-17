@@ -9,12 +9,12 @@ const PROJECTS = [
       "Mena is a wellness based mobile application aimed at creating a social community for people to share their wellness journeys, tips, and support.",
     tech: ["React Native", "Tailwind CSS", "Express", "MySQL"],
     category: "mobile",
-    screenshots: [   "/src/assets/mencom/mena.png",
-      "/src/assets/mencom/1.png",
-      "/src/assets/mencom/2.png",
-      "/src/assets/mencom/3.png",
-      "/src/assets/mencom/4.png",
-      "/src/assets/mencom/5.png"
+    screenshots: [   "mencom/mena.png",
+      "mencom/1.png",
+      "mencom/2.png",
+      "mencom/3.png",
+      "mencom/4.png",
+      "mencom/5.png"
     ],
     liveUrl: "",
     repoUrl: "",
@@ -28,7 +28,7 @@ const PROJECTS = [
       "kiraye is a rental property listing mobile application designed to connect landlords and tenants, providing a seamless platform for property discovery, communication, and management.",
     tech: ["React Native","Node.js" , "MySQL"],
     category: "mobile",
-    screenshots: ["/src/assets/kiraye/kiraye.png", "/src/assets/kiraye/1.png", "/src/assets/kiraye/2.png", "/src/assets/kiraye/3.png", "/src/assets/kiraye/4.png"],
+    screenshots: ["kiraye/kiraye.png", "kiraye/1.png", "kiraye/2.png", "kiraye/3.png", "kiraye/4.png"],
     liveUrl: "",
     repoUrl: "",
     year: "2025",
@@ -41,7 +41,7 @@ const PROJECTS = [
       "Coffee Meet is a telegram bot designed for coffee enthusiasts to find and connect with other coffee lovers in their area.",
     tech: ["php", "MySQL"],
     category: "Bot",
-    screenshots: ["../src/assets/coffee.png"],
+    screenshots: ["coffee.png"],
     liveUrl: "",
     repoUrl: "https://github.com/yoni638/Projects.git",
     year: "2026",
@@ -66,6 +66,8 @@ const TECH_COLORS = {
   "Chart.js":     { bg: "rgba(255,99,132,0.08)",  border: "rgba(255,99,132,0.2)",  color: "#ff6384" },
   Express:        { bg: "rgba(148,163,184,0.08)", border: "rgba(148,163,184,0.2)", color: "#94a3b8" },
   MySQL:          { bg: "rgba(0,117,143,0.08)",   border: "rgba(0,117,143,0.2)",   color: "#00758f" },
+  Excel:          { bg: "rgba(27,94,32,0.08)",    border: "rgba(27,94,32,0.2)",    color: "#217346" },
+  PowerBI:        { bg: "rgba(247,138,31,0.08)",  border: "rgba(247,138,31,0.2)",  color: "#f78a1f" },
 };
 
 function TechBadge({ label }) {
@@ -454,6 +456,7 @@ function Modal({ project, onClose }) {
           boxShadow: "0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04)",
           animation: "slideUp 230ms cubic-bezier(0.22,1,0.36,1)",
         }}
+        className="modal-container"
       >
         {/* Zoom overlay */}
         {zoomed && validShots.length > 0 && (
@@ -499,11 +502,13 @@ function Modal({ project, onClose }) {
         </div>
 
         {/* Body grid */}
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "var(--modal-cols, 1fr 340px)",
-          gap: 0,
-        }}>
+        <div
+          data-modal-grid="true"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "var(--modal-cols, 1fr 340px)",
+            gap: 0,
+          }}>
           {/* Left: screenshots */}
           <div style={{
             padding: "20px",
@@ -627,6 +632,24 @@ function Modal({ project, onClose }) {
             --modal-cols: 1fr !important;
             --modal-divider: none !important;
             --modal-divider-h: 1px solid rgba(30,41,59,0.5) !important;
+          }
+          .modal-container {
+            borderRadius: 16px !important;
+          }
+          div[style*="padding: 20px"] {
+            padding: 16px !important;
+          }
+          div[style*="padding: 24px 22px"] {
+            padding: 16px !important;
+          }
+          button[style*="padding: 9px 0"] {
+            padding: 8px 0 !important;
+            font-size: 11px !important;
+          }
+        }
+        @media (max-width: 640px) {
+          img[style*="height: 280"] {
+            height: 200px !important;
           }
         }
       `}</style>

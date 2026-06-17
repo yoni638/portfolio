@@ -21,7 +21,7 @@ function useScrollReveal(threshold = 0.1) {
 const certs = [
   {
     id: 1,
-    src: "/src/assets/certificate1.png",
+    src: "certificate1.png",
     title: "AI carrer essentials",
     issuer: "ALX",
     date: "5th May 2026",
@@ -29,7 +29,7 @@ const certs = [
   },
   {
     id: 2,
-    src: "/src/assets/certificate2.png",
+    src: "certificate2.png",
     title: "Proffesional Academy",
     issuer: "ALX",
     date: "26th May 2026",
@@ -37,7 +37,7 @@ const certs = [
   },
   {
     id: 3,
-    src: "/src/assets/certificate3.png",
+    src: "certificate3.png",
     title: "Founder Academy",
     issuer: "ALX",
     date: "29th May 2026",
@@ -45,7 +45,7 @@ const certs = [
   },
    {
     id: 4,
-    src: "/src/assets/certificate4.png",
+    src: "certificate4.png",
     title: "Digital Marketing",
     issuer: "Hubspot",
     date: "13th  2026",
@@ -106,14 +106,14 @@ function CertCard({ cert, index, visible, onOpen }) {
           borderRadius: 20,
           cursor: "pointer",
           transformStyle: "preserve-3d",
-          transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${hovered ? 1.03 : 1})`,
+          transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${hovered ? 1.02 : 1})`,
           transition: hovered
-            ? "transform 80ms linear, box-shadow 300ms ease"
+            ? "transform 120ms ease-out, box-shadow 300ms ease"
             : "transform 500ms cubic-bezier(0.23,1,0.32,1), box-shadow 300ms ease",
           boxShadow: hovered
-            ? `0 24px 60px rgba(${rgb},0.22), 0 0 0 1px rgba(${rgb},0.2)`
-            : `0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(40,52,72,0.6)`,
-          background: "#0b1120",
+            ? `0 20px 50px rgba(${rgb},0.3), 0 0 0 2px rgba(${rgb},0.3)`
+            : `0 6px 24px rgba(0,0,0,0.3), 0 0 0 1px rgba(30,41,59,0.5)`,
+          background: "linear-gradient(135deg, rgba(15,23,42,0.95) 0%, rgba(10,16,35,0.98) 100%)",
           overflow: "hidden",
           userSelect: "none",
         }}
@@ -121,25 +121,27 @@ function CertCard({ cert, index, visible, onOpen }) {
         {/* glare overlay */}
         <div style={{
           position: "absolute", inset: 0, zIndex: 4, borderRadius: 20, pointerEvents: "none",
-          background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(255,255,255,${glare.opacity}) 0%, transparent 60%)`,
+          background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(255,255,255,${glare.opacity * 1.5}) 0%, transparent 70%)`,
           transition: hovered ? "none" : "opacity 500ms ease",
         }} />
 
         {/* accent top bar */}
         <div style={{
-          position: "absolute", top: 0, left: 0, right: 0, height: 3, zIndex: 3,
-          background: `linear-gradient(90deg, ${cert.accent}, transparent)`,
-          opacity: hovered ? 1 : 0.4,
-          transition: "opacity 300ms ease",
+          position: "absolute", top: 0, left: 0, right: 0, height: 4, zIndex: 3,
+          background: `linear-gradient(90deg, ${cert.accent} 0%, ${cert.accent}aa 40%, transparent 100%)`,
+          opacity: hovered ? 1 : 0.6,
+          transition: "opacity 300ms ease, height 300ms ease",
+          height: hovered ? 4 : 3,
         }} />
 
         {/* corner glow */}
         <div style={{
-          position: "absolute", top: -40, right: -40, width: 120, height: 120,
+          position: "absolute", top: -30, right: -30, width: 100, height: 100,
           borderRadius: "50%", zIndex: 1, pointerEvents: "none",
-          background: `radial-gradient(circle, rgba(${rgb},0.14) 0%, transparent 70%)`,
-          transition: "opacity 300ms ease",
-          opacity: hovered ? 1 : 0.3,
+          background: `radial-gradient(circle, rgba(${rgb},0.2) 0%, transparent 65%)`,
+          transition: "opacity 400ms ease, transform 400ms ease",
+          opacity: hovered ? 1 : 0.5,
+          transform: hovered ? "scale(1.2)" : "scale(1)",
         }} />
 
         {/* image */}
@@ -147,14 +149,15 @@ function CertCard({ cert, index, visible, onOpen }) {
           position: "relative", zIndex: 2,
           padding: "1.25rem 1.25rem 0",
           transformStyle: "preserve-3d",
-          transform: "translateZ(20px)",
+          transform: "translateZ(15px)",
         }}>
           <div style={{
-            borderRadius: 12, overflow: "hidden",
-            border: `1px solid rgba(${rgb},0.18)`,
-            boxShadow: `0 4px 20px rgba(0,0,0,0.5)`,
+            borderRadius: 14, overflow: "hidden",
+            border: `2px solid rgba(${rgb},0.25)`,
+            boxShadow: `0 6px 24px rgba(0,0,0,0.4)`,
             aspectRatio: "16/10",
             background: "#060a18",
+            transition: "border-color 300ms ease, box-shadow 300ms ease",
           }}>
             <img
               src={cert.src}
@@ -164,8 +167,9 @@ function CertCard({ cert, index, visible, onOpen }) {
                 width: "100%", height: "100%",
                 objectFit: "cover",
                 display: "block",
-                transition: "transform 500ms ease",
-                transform: hovered ? "scale(1.04)" : "scale(1)",
+                transition: "transform 400ms ease, filter 400ms ease",
+                transform: hovered ? "scale(1.06)" : "scale(1)",
+                filter: hovered ? "brightness(1.05)" : "brightness(1)",
               }}
             />
           </div>
@@ -176,21 +180,22 @@ function CertCard({ cert, index, visible, onOpen }) {
           position: "relative", zIndex: 2,
           padding: "1rem 1.25rem 1.25rem",
           transformStyle: "preserve-3d",
-          transform: "translateZ(10px)",
+          transform: "translateZ(8px)",
         }}>
           <p style={{
             fontFamily: "'DM Serif Display', serif",
-            fontSize: "0.95rem", fontWeight: 300,
-            color: "#f1f5f9", margin: "0 0 4px",
-            lineHeight: 1.3,
-            letterSpacing:"0.08em"
+            fontSize: "1rem", fontWeight: 400,
+            color: "#f8fafc", margin: "0 0 6px",
+            lineHeight: 1.35,
+            letterSpacing:"0.05em"
           }}>
             {cert.title}
           </p>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <p style={{
               fontFamily: "'DM Sans', sans-serif",
-              fontSize: "11px", color: "#64748b", margin: 0,
+              fontSize: "11px", color: "#94a3b8", margin: 0,
+              fontWeight: 500,
             }}>
               {cert.issuer}
             </p>
@@ -198,9 +203,10 @@ function CertCard({ cert, index, visible, onOpen }) {
               fontFamily: "'DM Sans', sans-serif",
               fontSize: "10px",
               color: cert.accent,
-              background: `rgba(${rgb},0.1)`,
-              border: `1px solid rgba(${rgb},0.2)`,
-              padding: "2px 8px", borderRadius: 20,
+              background: `rgba(${rgb},0.12)`,
+              border: `1px solid rgba(${rgb},0.25)`,
+              padding: "3px 9px", borderRadius: 12,
+              fontWeight: 600,
             }}>
               {cert.date}
             </span>
@@ -209,14 +215,16 @@ function CertCard({ cert, index, visible, onOpen }) {
 
         {/* click hint */}
         <div style={{
-          position: "absolute", bottom: 2, right: 14, zIndex: 3,
+          position: "absolute", bottom: 6, right: 14, zIndex: 3,
           fontFamily: "'DM Sans', sans-serif",
-          fontSize: "9px", letterSpacing: "0.2em",
+          fontSize: "9px", letterSpacing: "0.22em",
           textTransform: "uppercase",
-          color: hovered ? `rgba(${rgb},0.8)` : "rgba(71,85,105,0.6)",
-          transition: "color 250ms ease",
+          color: hovered ? cert.accent : "rgba(71,85,105,0.7)",
+          transition: "color 250ms ease, transform 250ms ease",
+          transform: hovered ? "translateX(-3px)" : "translateX(0)",
+          fontWeight: 600,
         }}>
-          view full ↗
+          view ↗
         </div>
       </div>
     </div>
@@ -252,6 +260,15 @@ function Lightbox({ cert, onClose }) {
       <style>{`
         @keyframes lbIn { from { opacity:0 } to { opacity:1 } }
         @keyframes lbImg { from { opacity:0; transform:scale(0.94) } to { opacity:1; transform:scale(1) } }
+        @media (max-width: 640px) {
+          div[style*="padding: 1.5rem"] {
+            padding: 0.75rem !important;
+          }
+          .glow-effect {
+            width: 300px !important;
+            height: 300px !important;
+          }
+        }
       `}</style>
 
       {/* glow behind image */}
@@ -259,7 +276,8 @@ function Lightbox({ cert, onClose }) {
         position: "absolute", width: 600, height: 600, borderRadius: "50%", pointerEvents: "none",
         background: `radial-gradient(circle, rgba(${rgb},0.12) 0%, transparent 70%)`,
         filter: "blur(60px)",
-      }} />
+      }}
+      className="glow-effect" />
 
       <div
         onClick={(e) => e.stopPropagation()}

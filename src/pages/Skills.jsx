@@ -1,8 +1,60 @@
 import { useEffect, useRef, useState } from "react";
 import {
-  SiHtml5, SiCss3, SiJavascript, SiReact,
+  SiHtml5, SiJavascript, SiReact,
   SiNodedotjs, SiExpress, SiPhp, SiMysql, SiMongodb,
 } from "react-icons/si";
+
+// Custom CSS3 icon since SiCss3 is not available
+function SiCss3({ size, color }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect x="2" y="2" width="20" height="20" rx="2" fill={color} fillOpacity="0.2"/>
+      <path d="M12 2L2 7v10l10 5 10-5V7L12 2z" stroke={color} strokeWidth="2" fill="none"/>
+      <path d="M12 2v20M2 7l10 5 10-5" stroke={color} strokeWidth="2" fill="none"/>
+    </svg>
+  );
+}
+
+// Custom Excel icon since SiMicrosoftexcel is not available
+function SiMicrosoftexcel({ size, color }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect x="2" y="2" width="20" height="20" rx="2" fill={color} fillOpacity="0.2"/>
+      <path d="M7 7H17M7 12H17M7 17H12" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+      <rect x="14" y="14" width="4" height="4" fill={color} fillOpacity="0.6"/>
+    </svg>
+  );
+}
+
+// Custom PowerBI icon since SiPowerbi is not available
+function SiPowerbi({ size, color }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect x="4" y="4" width="16" height="16" rx="2" fill={color} fillOpacity="0.2"/>
+      <rect x="7" y="8" width="3" height="8" rx="1" fill={color} fillOpacity="0.8"/>
+      <rect x="12" y="6" width="3" height="10" rx="1" fill={color} fillOpacity="0.8"/>
+      <rect x="17" y="10" width="3" height="6" rx="1" fill={color} fillOpacity="0.8"/>
+    </svg>
+  );
+}
 
 function useScrollReveal(threshold = 0.12) {
   const ref = useRef(null);
@@ -42,6 +94,11 @@ const backend = [
   { Icon: SiPhp,        name: "PHP",          color: "#8892bf" },
   { Icon: SiMysql,      name: "MySQL",        color: "#4479a1" },
   { Icon: SiMongodb,    name: "MongoDB",      color: "#47a248" },
+];
+
+const dataAnalytics = [
+  { Icon: SiMicrosoftexcel, name: "Excel",        color: "#217346" },
+  { Icon: SiPowerbi,        name: "PowerBI",      color: "#f2c811" },
 ];
 
 function SkillCard({ Icon, name, color, short, visible, delay, from }) {
@@ -112,7 +169,7 @@ function SkillCard({ Icon, name, color, short, visible, delay, from }) {
   );
 }
 
-function CategoryBlock({ label, tag, skills, visible, baseDelay, from }) {
+function CategoryBlock({ label, tag, skills, visible, baseDelay, from, style }) {
   return (
     <div style={{
       background: "rgba(8,14,31,0.7)",
@@ -122,6 +179,7 @@ function CategoryBlock({ label, tag, skills, visible, baseDelay, from }) {
       display: "flex",
       flexDirection: "column",
       gap: 16,
+      ...style,
     }}>
       {/* label row */}
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -246,28 +304,76 @@ export default function Skills() {
 
         {/* ── bento grid ── */}
         <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))",
+          display: "flex",
+          flexDirection: "column",
           gap: "14px",
-        }}>
-          <CategoryBlock
-            label="Frontend Development"
-            tag="Client Side"
-            skills={frontend}
-            visible={visible}
-            baseDelay={100}
-            from="left"
-          />
-          <CategoryBlock
-            label="Backend & Databases"
-            tag="Server Side"
-            skills={backend}
-            visible={visible}
-            baseDelay={220}
-            from="right"
-          />
+        }}
+        className="skills-container">
+          {/* Top row: Frontend and Backend */}
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "14px",
+          }}
+          className="top-row">
+            <CategoryBlock
+              label="Frontend Development"
+              tag="Client Side"
+              skills={frontend}
+              visible={visible}
+              baseDelay={100}
+              from="left"
+            />
+            <CategoryBlock
+              label="Backend & Databases"
+              tag="Server Side"
+              skills={backend}
+              visible={visible}
+              baseDelay={220}
+              from="right"
+            />
+          </div>
+
+          {/* Bottom row: Data Analytics centered */}
+          <div style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+          className="bottom-row">
+            <CategoryBlock
+              label="Data Analytics"
+              tag="Analytics"
+              skills={dataAnalytics}
+              visible={visible}
+              baseDelay={340}
+              from="left"
+              style={{ width: "100%", maxWidth: "50%" }}
+            />
+          </div>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .skills-container {
+            display: flex !important;
+            flex-direction: column !important;
+          }
+          .top-row {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 14px !important;
+          }
+          .bottom-row {
+            display: flex !important;
+            justifyContent: flex-start !important;
+          }
+          .bottom-row > div {
+            width: 100% !important;
+            maxWidth: 100% !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }
