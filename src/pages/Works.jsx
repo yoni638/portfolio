@@ -3,18 +3,19 @@ import { useState, useEffect } from "react";
 const PROJECTS = [
   {
     id: 1,
-    title: "Mena ",
-    tagline:"Wellness community social media platform",
+    title: "Mena",
+    tagline: "Wellness community social media platform",
     description:
       "Mena is a wellness based mobile application aimed at creating a social community for people to share their wellness journeys, tips, and support.",
     tech: ["React Native", "Tailwind CSS", "Express", "MySQL"],
     category: "mobile",
-    screenshots: [   "mencom/mena.png",
+    screenshots: [
+      "mencom/mena.png",
       "mencom/1.png",
       "mencom/2.png",
       "mencom/3.png",
       "mencom/4.png",
-      "mencom/5.png"
+      "mencom/5.png",
     ],
     liveUrl: "",
     repoUrl: "",
@@ -25,8 +26,8 @@ const PROJECTS = [
     title: "Kiraye",
     tagline: "Rental property listing mobile app",
     description:
-      "kiraye is a rental property listing mobile application designed to connect landlords and tenants, providing a seamless platform for property discovery, communication, and management.",
-    tech: ["React Native","Node.js" , "MySQL"],
+      "To help solve the current problem a tenant faces when looking for a rental property, Kiraye was developed to connect landlords and tenants directly.",
+    tech: ["React Native", "Node.js", "MySQL"],
     category: "mobile",
     screenshots: ["kiraye/kiraye.png", "kiraye/1.png", "kiraye/2.png", "kiraye/3.png", "kiraye/4.png"],
     liveUrl: "",
@@ -38,14 +39,14 @@ const PROJECTS = [
     title: "Coffee Meet",
     tagline: "A telegram bot for coffee lovers",
     description:
-      "Coffee Meet is a telegram bot designed for coffee enthusiasts to find and connect with other coffee lovers in their area.",
+      "Coffee meet is a telegram bot that aims to meet up new people to share their love for coffee and have a good time.",
     tech: ["php", "MySQL"],
     category: "Bot",
     screenshots: ["coffee.png"],
     liveUrl: "",
     repoUrl: "https://github.com/yoni638/Projects.git",
     year: "2026",
-  }
+  },
 ];
 
 const CATEGORY_COLORS = {
@@ -77,9 +78,11 @@ function TechBadge({ label }) {
       display: "inline-flex", alignItems: "center",
       padding: "3px 9px", borderRadius: 5,
       fontSize: "9.5px", fontWeight: 600, letterSpacing: "0.04em",
-      fontFamily: "'DM Mono', 'Fira Mono', monospace",
+      fontFamily: "'Nunito', sans-serif",
       background: s.bg, border: `1px solid ${s.border}`, color: s.color,
-      whiteSpace: "nowrap",
+      /* ── fix: allow wrapping, never clip ── */
+      whiteSpace: "normal",
+      wordBreak: "break-word",
     }}>
       {label}
     </span>
@@ -93,8 +96,12 @@ function CategoryBadge({ label }) {
       display: "inline-flex", alignItems: "center",
       padding: "3px 10px", borderRadius: 4,
       fontSize: "8.5px", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase",
-      fontFamily: "'DM Sans', sans-serif",
+      fontFamily: "'Nunito', sans-serif",
       background: s.bg, border: `1px solid ${s.border}`, color: s.color,
+      /* ── fix: never overflow its container ── */
+      maxWidth: "100%",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
     }}>
       {label}
     </span>
@@ -117,7 +124,7 @@ function ImgOrPlaceholder({ src, alt, style = {}, onClick }) {
           <circle cx="8.5" cy="8.5" r="1.5" />
           <path d="M21 15l-5-5L5 21" />
         </svg>
-        <span style={{ fontSize: 9, color: "rgba(148,163,184,0.3)", fontFamily: "'DM Sans',sans-serif", letterSpacing: "0.06em" }}>
+        <span style={{ fontSize: 9, color: "rgba(148,163,184,0.3)", fontFamily: "'Nunito',sans-serif", letterSpacing: "0.06em" }}>
           preview unavailable
         </span>
       </div>
@@ -147,6 +154,7 @@ function IconLink({ href, title, children }) {
         color: hovered ? "#cbd5e1" : "#64748b",
         textDecoration: "none", fontSize: 12,
         transition: "all 150ms ease", fontFamily: "monospace",
+        flexShrink: 0,
       }}
     >
       {children}
@@ -154,7 +162,7 @@ function IconLink({ href, title, children }) {
   );
 }
 
-/* ── Project Card — modern & classic ── */
+/* ── Project Card ── */
 function ProjectCard({ project, index, onOpen }) {
   const [hov, setHov] = useState(false);
 
@@ -176,6 +184,10 @@ function ProjectCard({ project, index, onOpen }) {
           ? "0 20px 50px rgba(37,99,235,0.12), 0 0 0 1px rgba(59,130,246,0.06)"
           : "0 2px 16px rgba(0,0,0,0.3)",
         display: "flex", flexDirection: "column",
+        /* ── fix: card itself must never overflow its grid column ── */
+        minWidth: 0,
+        width: "100%",
+        boxSizing: "border-box",
       }}
     >
       {/* Top shimmer line */}
@@ -199,45 +211,59 @@ function ProjectCard({ project, index, onOpen }) {
           background: "linear-gradient(to bottom, rgba(0,0,0,0.06) 0%, transparent 38%, rgba(8,13,28,0.82) 100%)",
           pointerEvents: "none",
         }} />
+        {/* ── fix: badge row uses flex-wrap so year badge never pushes outside ── */}
         <div style={{
           position: "absolute", top: 12, left: 12, right: 12,
-          display: "flex", justifyContent: "space-between", alignItems: "center",
+          display: "flex", justifyContent: "space-between", alignItems: "flex-start",
+          flexWrap: "wrap", gap: 6,
         }}>
           <CategoryBadge label={project.category} />
           <span style={{
             fontSize: "8px", color: "rgba(148,163,184,0.5)",
-            fontFamily: "'DM Mono',monospace", letterSpacing: "0.1em",
+            fontFamily: "'Nunito',monospace", letterSpacing: "0.1em",
             background: "rgba(4,8,20,0.65)", backdropFilter: "blur(6px)",
             padding: "3px 8px", borderRadius: 4,
             border: "1px solid rgba(30,41,59,0.5)",
+            whiteSpace: "nowrap",
           }}>
             {project.year}
           </span>
         </div>
-        {/* Index label bottom-left */}
-       /{/*<div style={{
-          position: "absolute", bottom: 10, left: 14,
-          fontSize: "10px", fontFamily: "'DM Mono',monospace",
-          color: "rgba(148,163,184,0.18)", letterSpacing: "0.06em",
-        }}>
-          {String(index + 1).padStart(2, "0")}
-        </div> */} 
       </div>
 
       {/* Body */}
-      <div style={{ padding: "18px 20px 20px", flex: 1, display: "flex", flexDirection: "column", gap: 10 }}>
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8 }}>
-          <div>
+      <div style={{
+        padding: "18px 20px 20px", flex: 1,
+        display: "flex", flexDirection: "column", gap: 10,
+        /* ── fix: prevent body from overflowing card ── */
+        minWidth: 0, overflow: "hidden", boxSizing: "border-box",
+      }}>
+
+        {/* Title row — stack on very narrow instead of forcing side-by-side */}
+        <div style={{
+          display: "flex", alignItems: "flex-start",
+          justifyContent: "space-between", gap: 8,
+          /* ── fix: allow wrap so arrow badge doesn't push title off screen ── */
+          flexWrap: "nowrap",
+          minWidth: 0,
+        }}>
+          <div style={{ minWidth: 0, flex: 1 }}>
             <h3 style={{
-              fontFamily: "'DM Serif Display', serif",
-              fontSize: "1.12rem", color: "#f1f5f9", margin: "0 0 3px", lineHeight: 1.2,
-              letterSpacing: "-0.01em",
+              fontFamily: "'Nunito', sans-serif",
+              fontSize: "1.05rem", color: "#f1f5f9", margin: "0 0 3px", lineHeight: 1.3,
+              letterSpacing: "0.01em",
+              /* ── fix: long titles wrap instead of overflow ── */
+              wordBreak: "break-word",
+              overflowWrap: "break-word",
             }}>
               {project.title}
             </h3>
             <p style={{
-              margin: 0, fontFamily: "'DM Sans',sans-serif",
+              margin: 0, fontFamily: "'Nunito', sans-serif",
               fontSize: "10.5px", color: "rgba(148,163,184,0.45)", letterSpacing: "0.02em",
+              /* ── fix: tagline wraps instead of overflowing ── */
+              wordBreak: "break-word",
+              overflowWrap: "break-word",
             }}>
               {project.tagline}
             </p>
@@ -256,7 +282,7 @@ function ProjectCard({ project, index, onOpen }) {
           </div>
         </div>
 
-        {/* Subtle divider */}
+        {/* Divider */}
         <div style={{
           height: 1,
           background: hov
@@ -265,23 +291,29 @@ function ProjectCard({ project, index, onOpen }) {
           transition: "all 280ms ease",
         }} />
 
+        {/* Description — fully visible, no clamp-related hidden overflow */}
         <p style={{
-          fontFamily: "'DM Sans',sans-serif",
+          fontFamily: "'Nunito', sans-serif",
           fontSize: "11.5px", color: "#475569", lineHeight: 1.75,
           margin: 0,
-          display: "-webkit-box", WebkitLineClamp: 2,
-          WebkitBoxOrient: "vertical", overflow: "hidden",
+          /* ── fix: remove line clamp; let text wrap fully on mobile ── */
+          wordBreak: "break-word",
+          overflowWrap: "break-word",
         }}>
           {project.description}
         </p>
 
+        {/* Tech badges — already flex-wrap, just ensure no single badge overflows */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
           {project.tech.map(t => <TechBadge key={t} label={t} />)}
         </div>
 
+        {/* Footer row */}
         <div style={{
           marginTop: "auto", paddingTop: 14,
-          display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8,
+          display: "flex", alignItems: "center",
+          justifyContent: "space-between", gap: 8,
+          flexWrap: "wrap",          /* ── fix: wrap if both buttons don't fit ── */
         }}>
           <button
             onClick={e => { e.stopPropagation(); onOpen(project); }}
@@ -290,9 +322,10 @@ function ProjectCard({ project, index, onOpen }) {
               background: hov ? "rgba(37,99,235,0.18)" : "rgba(37,99,235,0.08)",
               border: `1px solid ${hov ? "rgba(59,130,246,0.4)" : "rgba(37,99,235,0.2)"}`,
               color: hov ? "#93c5fd" : "#60a5fa",
-              fontFamily: "'DM Sans',sans-serif",
+              fontFamily: "'Nunito', sans-serif",
               fontSize: "10.5px", fontWeight: 600, cursor: "pointer",
               transition: "all 160ms", letterSpacing: "0.03em",
+              whiteSpace: "nowrap",
             }}
           >
             View Details →
@@ -307,7 +340,7 @@ function ProjectCard({ project, index, onOpen }) {
   );
 }
 
-/* ── Image Zoom Overlay — with prev/next arrows ── */
+/* ── Image Zoom Overlay ── */
 function ImageZoom({ screenshots, activeIndex, onClose, onPrev, onNext }) {
   const total = screenshots.length;
 
@@ -364,11 +397,8 @@ function ImageZoom({ screenshots, activeIndex, onClose, onPrev, onNext }) {
           display: "block", cursor: "default",
         }}
       />
-
       {navBtn(onPrev, activeIndex === 0, "‹")}
       {navBtn(onNext, activeIndex === total - 1, "›")}
-
-      {/* Dot indicators */}
       {total > 1 && (
         <div style={{
           position: "absolute", bottom: 16, left: "50%", transform: "translateX(-50%)",
@@ -383,11 +413,9 @@ function ImageZoom({ screenshots, activeIndex, onClose, onPrev, onNext }) {
           ))}
         </div>
       )}
-
-      {/* Counter */}
       <div style={{
         position: "absolute", top: 14, left: "50%", transform: "translateX(-50%)",
-        fontSize: "9px", fontFamily: "'DM Mono',monospace",
+        fontSize: "9px", fontFamily: "'Nunito',monospace",
         color: "rgba(148,163,184,0.4)", letterSpacing: "0.1em",
         background: "rgba(6,10,24,0.7)", backdropFilter: "blur(4px)",
         padding: "4px 10px", borderRadius: 5,
@@ -395,8 +423,6 @@ function ImageZoom({ screenshots, activeIndex, onClose, onPrev, onNext }) {
       }}>
         {activeIndex + 1} / {total}
       </div>
-
-      {/* Close */}
       <button
         onClick={onClose}
         style={{
@@ -455,10 +481,10 @@ function Modal({ project, onClose }) {
           borderRadius: 22, overflow: "hidden",
           boxShadow: "0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04)",
           animation: "slideUp 230ms cubic-bezier(0.22,1,0.36,1)",
+          boxSizing: "border-box",
         }}
         className="modal-container"
       >
-        {/* Zoom overlay */}
         {zoomed && validShots.length > 0 && (
           <ImageZoom
             screenshots={validShots}
@@ -475,12 +501,14 @@ function Modal({ project, onClose }) {
           padding: "14px 20px",
           borderBottom: "1px solid rgba(30,41,59,0.6)",
           background: "rgba(6,10,24,0.6)",
+          gap: 8,
         }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0 }}>
             <CategoryBadge label={project.category} />
             <span style={{
               color: "rgba(148,163,184,0.35)", fontSize: "10px",
-              fontFamily: "'DM Sans',sans-serif", letterSpacing: "0.08em",
+              fontFamily: "'Nunito',sans-serif", letterSpacing: "0.08em",
+              whiteSpace: "nowrap",
             }}>
               {project.year}
             </span>
@@ -488,7 +516,7 @@ function Modal({ project, onClose }) {
           <button
             onClick={onClose} aria-label="Close"
             style={{
-              width: 32, height: 32, borderRadius: 8,
+              width: 32, height: 32, borderRadius: 8, flexShrink: 0,
               background: "rgba(30,41,59,0.7)", border: "1px solid rgba(51,65,85,0.5)",
               color: "#64748b", fontSize: 14, cursor: "pointer",
               display: "flex", alignItems: "center", justifyContent: "center",
@@ -508,14 +536,15 @@ function Modal({ project, onClose }) {
             display: "grid",
             gridTemplateColumns: "var(--modal-cols, 1fr 340px)",
             gap: 0,
-          }}>
+          }}
+        >
           {/* Left: screenshots */}
           <div style={{
             padding: "20px",
             borderRight: "var(--modal-divider, 1px solid rgba(30,41,59,0.5))",
             borderBottom: "var(--modal-divider-h, none)",
+            boxSizing: "border-box", minWidth: 0,
           }}>
-            {/* Main image */}
             <div style={{
               borderRadius: 12, overflow: "hidden",
               border: "1px solid rgba(30,41,59,0.6)",
@@ -528,12 +557,10 @@ function Modal({ project, onClose }) {
                 style={{ width: "100%", height: 280, display: "block" }}
                 onClick={() => validShots.length > 0 && setZoomed(true)}
               />
-
             </div>
 
-            {/* Thumbnails */}
             {validShots.length > 1 && (
-              <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+              <div style={{ display: "flex", gap: 8, marginTop: 10, flexWrap: "wrap" }}>
                 {validShots.map((s, i) => (
                   <button key={i}
                     onClick={() => { setActiveShot(i); setZoomed(false); }}
@@ -551,16 +578,15 @@ function Modal({ project, onClose }) {
               </div>
             )}
 
-            {/* Link buttons */}
             {(project.liveUrl || project.repoUrl) && (
-              <div style={{ display: "flex", gap: 10, marginTop: 16 }}>
+              <div style={{ display: "flex", gap: 10, marginTop: 16, flexWrap: "wrap" }}>
                 {project.liveUrl && (
                   <a href={project.liveUrl} target="_blank" rel="noreferrer"
                     style={{
-                      flex: 1, padding: "9px 0", textAlign: "center",
+                      flex: 1, minWidth: 100, padding: "9px 0", textAlign: "center",
                       borderRadius: 10, textDecoration: "none",
                       background: "#2563eb", color: "#fff",
-                      fontFamily: "'DM Sans',sans-serif", fontSize: "12px", fontWeight: 600,
+                      fontFamily: "'Nunito',sans-serif", fontSize: "12px", fontWeight: 600,
                       transition: "background 180ms", letterSpacing: "0.02em",
                     }}
                     onMouseEnter={e => e.currentTarget.style.background = "#1d4ed8"}
@@ -570,10 +596,10 @@ function Modal({ project, onClose }) {
                 {project.repoUrl && (
                   <a href={project.repoUrl} target="_blank" rel="noreferrer"
                     style={{
-                      flex: 1, padding: "9px 0", textAlign: "center",
+                      flex: 1, minWidth: 100, padding: "9px 0", textAlign: "center",
                       borderRadius: 10, textDecoration: "none",
                       background: "transparent", color: "#94a3b8",
-                      fontFamily: "'DM Sans',sans-serif", fontSize: "12px", fontWeight: 500,
+                      fontFamily: "'Nunito',sans-serif", fontSize: "12px", fontWeight: 500,
                       border: "1px solid rgba(51,65,85,0.55)", transition: "all 180ms",
                     }}
                     onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(96,165,250,0.4)"; e.currentTarget.style.color = "#e2e8f0"; }}
@@ -584,19 +610,25 @@ function Modal({ project, onClose }) {
             )}
           </div>
 
-          {/* Right: info panel — unchanged */}
-          <div style={{ padding: "24px 22px", display: "flex", flexDirection: "column", gap: 18 }}>
+          {/* Right: info panel */}
+          <div style={{
+            padding: "24px 22px", display: "flex", flexDirection: "column", gap: 18,
+            boxSizing: "border-box", minWidth: 0,
+          }}>
             <div>
               <h2 style={{
-                fontFamily: "'DM Serif Display', serif",
-                fontSize: "1.55rem", color: "#f1f5f9", margin: "0 0 5px", lineHeight: 1.2,
+                fontFamily: "'Nunito', sans-serif",
+                fontSize: "1.45rem", color: "#f1f5f9", margin: "0 0 5px", lineHeight: 1.2,
+                fontWeight: 500,
+                wordBreak: "break-word",
               }}>
                 {project.title}
               </h2>
               <p style={{
-                fontFamily: "'DM Sans',sans-serif",
+                fontFamily: "'Nunito',sans-serif",
                 fontSize: "11px", color: "rgba(148,163,184,0.45)",
                 letterSpacing: "0.04em", margin: 0,
+                wordBreak: "break-word",
               }}>
                 {project.tagline}
               </p>
@@ -604,13 +636,17 @@ function Modal({ project, onClose }) {
 
             <div style={{ width: 28, height: 2, background: "linear-gradient(to right, #3b82f6, #6366f1)", borderRadius: 2 }} />
 
-            <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "12.5px", color: "#94a3b8", lineHeight: 1.8, margin: 0 }}>
+            <p style={{
+              fontFamily: "'Nunito',sans-serif", fontSize: "12.5px", color: "#94a3b8",
+              lineHeight: 1.8, margin: 0,
+              wordBreak: "break-word",
+            }}>
               {project.description}
             </p>
 
             <div>
               <p style={{
-                fontFamily: "'DM Sans',sans-serif",
+                fontFamily: "'Nunito',sans-serif",
                 fontSize: "9px", letterSpacing: "0.28em", textTransform: "uppercase",
                 color: "rgba(96,165,250,0.45)", margin: "0 0 10px",
               }}>
@@ -625,31 +661,43 @@ function Modal({ project, onClose }) {
       </div>
 
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
         @keyframes fadeIn  { from { opacity: 0 } to { opacity: 1 } }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px) } to { opacity: 1; transform: translateY(0) } }
+
+        /* ── mobile: stack the modal grid vertically ── */
         @media (max-width: 640px) {
-          [data-modal-grid] {
-            --modal-cols: 1fr !important;
-            --modal-divider: none !important;
-            --modal-divider-h: 1px solid rgba(30,41,59,0.5) !important;
+          [data-modal-grid="true"] {
+            grid-template-columns: 1fr !important;
+          }
+          [data-modal-grid="true"] > div:first-child {
+            border-right: none !important;
+            border-bottom: 1px solid rgba(30,41,59,0.5) !important;
+            padding: 16px !important;
+          }
+          [data-modal-grid="true"] > div:last-child {
+            padding: 16px !important;
           }
           .modal-container {
-            borderRadius: 16px !important;
-          }
-          div[style*="padding: 20px"] {
-            padding: 16px !important;
-          }
-          div[style*="padding: 24px 22px"] {
-            padding: 16px !important;
-          }
-          button[style*="padding: 9px 0"] {
-            padding: 8px 0 !important;
-            font-size: 11px !important;
+            border-radius: 16px !important;
           }
         }
+
+        /* ── mobile: shorter main screenshot ── */
         @media (max-width: 640px) {
-          img[style*="height: 280"] {
+          [data-modal-grid="true"] img[style*="height: 280"] {
             height: 200px !important;
+          }
+        }
+
+        /* ── mobile: single-column card grid ── */
+        .projects-grid {
+          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        }
+        @media (max-width: 640px) {
+          .projects-grid {
+            grid-template-columns: 1fr !important;
+            gap: 16px !important;
           }
         }
       `}</style>
@@ -676,13 +724,13 @@ export default function Works() {
           <div className="text-center mb-16">
             <p
               className="text-[9px] tracking-[0.45em] uppercase mb-4"
-              style={{ fontFamily: "'DM Sans', sans-serif", color: "rgba(96,165,250,0.5)" }}
+              style={{ fontFamily: "'Nunito', sans-serif", color: "rgba(96,165,250,0.5)" }}
             >
               — Selected Work —
             </p>
             <h2
               className="text-5xl md:text-6xl font-black text-white mb-4 leading-tight"
-              style={{ fontFamily: "'DM Serif Display', serif" }}
+              style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 500 }}
             >
               Projects
             </h2>
@@ -691,17 +739,16 @@ export default function Works() {
             }} />
             <p
               className="text-sm max-w-xs mx-auto leading-relaxed"
-              style={{ fontFamily: "'DM Sans', sans-serif", color: "#475569" }}
+              style={{ fontFamily: "'Nunito', sans-serif", color: "#475569" }}
             >
-              Some of the projects I've worked on not all are listed will be updated soon.
+              Some of the projects I've worked on. Not all are listed — they will be updated soon.
             </p>
           </div>
 
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-            gap: 22,
-          }}>
+          <div
+            className="projects-grid"
+            style={{ display: "grid", gap: 22 }}
+          >
             {PROJECTS.map((p, i) => (
               <ProjectCard key={p.id} project={p} index={i} onOpen={setActive} />
             ))}

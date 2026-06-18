@@ -9,13 +9,10 @@ function SiLinkedin({ size, color }) {
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      fill="none"
+      fill={color}
       xmlns="http://www.w3.org/2000/svg"
     >
-      <rect x="2" y="2" width="20" height="20" rx="2" fill={color} fillOpacity="0.2"/>
-      <path d="M7 17H5V10H7V17Z" stroke={color} strokeWidth="2" strokeLinecap="round"/>
-      <path d="M5 8C5.55228 8 6 7.55228 6 7C6 6.44772 5.55228 6 5 6C4.44772 6 4 6.44772 4 7C4 7.55228 4.44772 8 5 8Z" fill={color} fillOpacity="0.8"/>
-      <path d="M14 17H12V13.5C12 12.6716 11.8284 12.5 11 12.5C10.1716 12.5 10 12.6716 10 13.5V17H8V10H10V11C10.5 10.5 11 10 12 10C13.5 10 14 11.5 14 13.5V17Z" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
     </svg>
   );
 }
@@ -43,7 +40,7 @@ const contacts = [
     sub: "Call anytime",
     Icon: HiPhone,
     color: "#22c55e",
-    href: "tel:+251989709867",
+    href: "tel:+251976669307",
   },
   {
     label: "WhatsApp",
@@ -51,7 +48,7 @@ const contacts = [
     sub: "Message me",
     Icon: SiWhatsapp,
     color: "#25d366",
-    href: "https://wa.me/251989709867",
+    href: "https://wa.me/251976669307",
   },
   {
     label: "Email",
@@ -144,7 +141,7 @@ function ContactCard({ item, index, visible }) {
           <item.Icon size={20} color={hovered ? item.color : "#475569"} style={{ transition: "color 250ms" }} />
         </div>
         <span style={{
-          fontFamily: "'DM Sans', sans-serif",
+          fontFamily: "'Nunito', sans-serif",
           fontSize: "11px", letterSpacing: "0.25em",
           textTransform: "uppercase",
           color: hovered ? `rgba(${rgb},0.9)` : "#475569",
@@ -157,7 +154,7 @@ function ContactCard({ item, index, visible }) {
       {/* value */}
       <div>
         <p style={{
-          fontFamily: "'DM Serif Display', serif",
+          fontFamily: "'Nunito', sans-serif",
           fontSize: "clamp(1rem, 2vw, 1rem)",
           fontWeight: 400,
           color: hovered ? "#f1f5f9" : "#94a3b8",
@@ -169,7 +166,7 @@ function ContactCard({ item, index, visible }) {
           {item.value}
         </p>
         <p style={{
-          fontFamily: "'DM Sans', sans-serif",
+          fontFamily: "'Nunito', sans-serif",
           fontSize: "11px", color: "#334155",
           margin: 0,
           transition: "color 250ms",
@@ -181,7 +178,7 @@ function ContactCard({ item, index, visible }) {
       {/* arrow hint */}
       <div style={{
         position: "absolute", bottom: 14, right: 16,
-        fontFamily: "'DM Sans', sans-serif",
+        fontFamily: "'Nunito', sans-serif",
         fontSize: "13px",
         color: hovered ? item.color : "rgba(51,65,85,0.5)",
         transform: hovered ? "translate(2px,-2px)" : "translate(0,0)",
@@ -285,6 +282,10 @@ export default function Contact() {
           </p>
         </div>
       </div>
+
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+      `}</style>
     </section>
   );
 }

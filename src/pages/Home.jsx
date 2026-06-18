@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
- 
+
 function useTypewriter(phrases) {
   const [text, setText] = useState("");
   const state = useRef({ pi: 0, ci: 0, del: false });
@@ -33,7 +33,7 @@ function useTypewriter(phrases) {
   return text;
 }
 
- 
+
 function Intro({ onDone }) {
   const [phase, setPhase] = useState(0);
 
@@ -103,7 +103,57 @@ function Intro({ onDone }) {
   );
 }
 
- 
+
+/* Ambient background: thin circuit-trace lines with a slow flowing dash,
+   plus two faint signal pulses traveling along a couple of them.
+   No nodes, no glyph text — kept deliberately quiet and peripheral so
+   it never competes with the text or the photo. */
+function CircuitLines() {
+  const traces = [
+    { d: "M30,70 H240 V190 H420", dur: "9s", delay: "0s" },
+    { d: "M970,110 H760 V260 H580", dur: "10s", delay: "0.6s" },
+    { d: "M970,540 V680 H800 V860", dur: "8.5s", delay: "1.4s" },
+    { d: "M30,930 H210 V770 H380", dur: "11s", delay: "0.9s" },
+    { d: "M120,980 L260,860 L260,700", dur: "10.5s", delay: "2.1s" },
+  ];
+
+  // only a couple of traces also carry a small traveling pulse —
+  // a hint of "signal", not a whole light show
+  const pulses = [
+    { d: traces[0].d, dur: "6s" },
+    { d: traces[2].d, dur: "7.5s" },
+  ];
+
+  return (
+    <svg
+      className="absolute inset-0 w-full h-full"
+      viewBox="0 0 1000 1000"
+      preserveAspectRatio="xMidYMid slice"
+      aria-hidden="true"
+    >
+      {traces.map((t, i) => (
+        <path
+          key={`t-${i}`}
+          d={t.d}
+          fill="none"
+          stroke="rgba(96,165,250,0.16)"
+          strokeWidth="1"
+          strokeLinecap="round"
+          className="trace-flow"
+          style={{ animationDuration: t.dur, animationDelay: t.delay }}
+        />
+      ))}
+
+      {pulses.map((p, i) => (
+        <circle key={`pulse-${i}`} r="2.5" fill="#93c5fd" opacity="0.55">
+          <animateMotion dur={p.dur} repeatCount="indefinite" path={p.d} />
+        </circle>
+      ))}
+    </svg>
+  );
+}
+
+
 export default function Home() {
   const [showIntro, setShowIntro] = useState(true);
   const [reveal, setReveal] = useState(false);
@@ -144,233 +194,177 @@ export default function Home() {
 
       <section
         id="home"
-        className="relative min-h-screen flex items-center overflow-hidden border-b border-blue-950/30"
+        className="relative min-h-screen flex flex-col overflow-hidden border-b border-blue-950/30"
       >
         {/* ── background ── */}
         <div className="pointer-events-none absolute inset-0 z-0">
+          {/* Circuit board grid */}
           <div className="absolute inset-0" style={{
-            backgroundImage: "radial-gradient(rgba(99,155,255,0.045) 1px, transparent 1px)",
-            backgroundSize: "28px 28px",
+            backgroundImage: `
+              linear-gradient(rgba(96,165,250,0.05) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(96,165,250,0.05) 1px, transparent 1px)
+            `,
+            backgroundSize: "50px 50px",
           }} />
-          <div className="absolute right-[5%] top-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-[130px]"
+
+          {/* Network / data-flow visualization */}
+          <CircuitLines />
+
+          {/* Gradient orbs — now gently drifting */}
+          <div className="absolute right-[5%] top-1/2 w-[500px] h-[500px] rounded-full blur-[130px] orb-drift-a"
             style={{ background: "radial-gradient(circle, rgba(37,99,235,0.09) 0%, transparent 70%)" }} />
-          <div className="absolute left-0 bottom-0 w-[280px] h-[280px] rounded-full blur-[100px]"
+          <div className="absolute left-0 bottom-0 w-[280px] h-[280px] rounded-full blur-[100px] orb-drift-b"
             style={{ background: "radial-gradient(circle, rgba(29,78,216,0.07) 0%, transparent 70%)" }} />
         </div>
 
-        {/* ── layout ── */}
-        <div className="relative z-10 max-w-6xl mx-auto w-full px-5 sm:px-8 md:px-12 pt-20 pb-14 flex flex-col md:flex-row items-center gap-8 md:gap-16">
+        {/* ── text content ── */}
+        <div className="relative z-10 flex-1 flex items-center w-full">
+          <div className="max-w-6xl mx-auto w-full px-5 sm:px-8 md:px-12 pt-20 pb-[40vh] md:pb-16">
 
-          {/* ════ LEFT TEXT ════ */}
-          <div className="flex-1 flex flex-col gap-6 order-2 md:order-1 w-full">
+            <div className="flex flex-col gap-6 w-full max-w-xl">
 
-            {/* badge */}
-              {/*
-            <div style={fly(0)}>
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border text-[11px] font-medium"
-                style={{
-                  background: "rgba(6,78,59,0.2)",
-                  borderColor: "rgba(16,185,129,0.25)",
-                  color: "#34d399",
-                  fontFamily: "'DM Sans', sans-serif",
-                }}>
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                Available for hire
-              </span>*
-            </div>*/}
-
-           
-            <div style={fly(80)}>
-              <p className="text-slate-500 text-sm mb-2" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                Hey there 👋 I'm
-              </p>
-              <h1
-                className="leading-none font-black text-white"
-                style={{
-                  fontFamily: "'DM Serif Display', serif",
-                  fontSize: "clamp(2.6rem, 4vw, 1.8rem)",
-                }}
-              >
-                Yonatan<span style={{ color: "#60a5fa" }}>&nbsp;Getachew</span>
-              </h1>
-            </div>
-
-             
-            <div style={fly(180)}>
-              <p className="font-semibold min-h-[1.6rem]"
-                style={{
-                  fontFamily: "'DM Serif Display', serif",
-                  fontSize: "clamp(1rem, 2.2vw, 1.35rem)",
-                  color: "#93c5fd",
-                }}>
-                {role}
-                <span className="animate-pulse" style={{ color: "#60a5fa" }}>|</span>
-              </p>
-            </div>
-
-             
-            <div style={fly(260)}>
-              <p className="text-slate-400 leading-relaxed max-w-[420px] text-sm"
-                style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                I'm a Full Stack Developer with interests in programming and also a junior IT support specialist. I'm energetic and passionate about learning new technologies and solving problems.
-              </p>
-            </div>
-
-             
-            <div style={fly(340)} className="flex flex-wrap gap-2">
-              {[
-                { label: "React & Node.js", icon: "⚛️" },
-                { label: "Bot Development", icon: "🤖" },
-                { label: "Data Analyst", icon: "📊" },
-                { label: "Fast Learner", icon: "🚀" },
-              ].map(({ label, icon }) => (
-                <span key={label}
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-[11px] font-medium"
+              {/* badge */}
+                {/*
+              <div style={fly(0)}>
+                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border text-[11px] font-medium"
                   style={{
-                    background: "rgba(15,23,42,0.7)",
-                    border: "1px solid rgba(51,65,85,0.5)",
-                    color: "#94a3b8",
+                    background: "rgba(6,78,59,0.2)",
+                    borderColor: "rgba(16,185,129,0.25)",
+                    color: "#34d399",
                     fontFamily: "'DM Sans', sans-serif",
                   }}>
-                  <span>{icon}</span>{label}
-                </span>
-              ))}
-            </div>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Available for hire
+                </span>*
+              </div>*/}
 
-            
-            <div style={fly(420)} className="flex flex-wrap gap-3">
-              <button
-                onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-                className="cursor-pointer"
-                style={{
-                  padding: "10px 22px", borderRadius: 10,
-                  background: "#2563eb",
-                  color: "#fff", fontFamily: "'DM Sans', sans-serif",
-                  fontWeight: 600, fontSize: "0.85rem", letterSpacing: "0.02em",
-                  border: "none",
-                  boxShadow: "0 4px 20px rgba(37,99,235,0.3)",
-                  transition: "background 200ms, transform 150ms",
-                }}
-                onMouseEnter={e => e.currentTarget.style.background = "#1d4ed8"}
-                onMouseLeave={e => e.currentTarget.style.background = "#2563eb"}
-                onMouseDown={e => e.currentTarget.style.transform = "scale(0.97)"}
-                onMouseUp={e => e.currentTarget.style.transform = "scale(1)"}
-              >
-                Let's Talk →
-              </button>
-              <button
-                onClick={() => document.getElementById("works")?.scrollIntoView({ behavior: "smooth" })}
-                className="cursor-pointer"
-                style={{
-                  padding: "10px 22px", borderRadius: 10,
-                  background: "transparent",
-                  color: "#94a3b8", fontFamily: "'DM Sans', sans-serif",
-                  fontWeight: 500, fontSize: "0.85rem",
-                  border: "1px solid rgba(51,65,85,0.6)",
-                  transition: "border-color 200ms, color 200ms",
-                }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(96,165,250,0.45)"; e.currentTarget.style.color = "#e2e8f0"; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(51,65,85,0.6)"; e.currentTarget.style.color = "#94a3b8"; }}
-              >
-                View My Work
-              </button>
-            </div>
 
-            
-            <div
-              className="flex gap-8 pt-5"
-              style={{ ...fly(500), borderTop: "1px solid rgba(30,41,59,0.7)" }}
-            >
-              {[
-                { num: "1+", label: "Yrs in Dev" },
-                { num: "5+", label: "Projects Delivered" },
-                { num: "1+", label: "Yrs IT Support" },
-              ].map(({ num, label }) => (
-                <div key={label}>
-                  <p className="font-black text-white text-lg leading-none"
-                    style={{ fontFamily: "'DM Serif Display', serif" }}>{num}</p>
-                  <p className="text-slate-500 text-[10px] mt-0.5 tracking-wide"
-                    style={{ fontFamily: "'DM Sans', sans-serif" }}>{label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+              <div style={fly(80)}>
+                <p className="text-slate-500 text-sm mb-2" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                  Hey there 👋 I'm
+                </p>
+                <h1
+                  className="leading-none font-black text-white"
+                  style={{
+                    fontFamily: "'DM Serif Display', serif",
+                    fontSize: "clamp(1.8rem, 4.5vw, 2.6rem)",
+                  }}
+                >
+                  Yonatan<span style={{ color: "#60a5fa" }}>&nbsp;Getachew</span>
+                </h1>
+              </div>
 
-          
-          <div
-            className="relative flex-shrink-0 order-1 md:order-2 flex justify-center"
-            style={{ width: "clamp(180px, 45vw, 340px)", margin: "0 auto" }}
-          >
-            
-            <div style={{
-              position: "absolute",
-              inset: "15% 0 0 0",
-              borderRadius: 20,
-              background: "linear-gradient(160deg, rgba(30,58,138,0.12) 0%, rgba(15,23,42,0.28) 100%)",
-              border: "1px solid rgba(59,130,246,0.1)",
-              backdropFilter: "blur(4px)",
-              ...fly(60),
-            }} />
 
-            
-            {[
-              ["top-[13%]","left-1","border-t-2 border-l-2","rounded-tl-lg"],
-              ["top-[13%]","right-1","border-t-2 border-r-2","rounded-tr-lg"],
-              ["bottom-1","left-1","border-b-2 border-l-2","rounded-bl-lg"],
-              ["bottom-1","right-1","border-b-2 border-r-2","rounded-br-lg"],
-            ].map(([t,l,b,r], i) => (
-              <div key={i} className={`absolute ${t} ${l} w-4 h-4 ${b} border-blue-500/25 ${r} pointer-events-none`}
-                style={fly(80 + i * 35)} />
-            ))}
+              <div style={fly(180)}>
+                <p className="font-semibold min-h-[1.6rem]"
+                  style={{
+                    fontFamily: "'DM Serif Display', serif",
+                    fontSize: "clamp(1rem, 2.2vw, 1.35rem)",
+                    color: "#93c5fd",
+                  }}>
+                  {role}
+                  <span className="animate-pulse" style={{ color: "#60a5fa" }}>|</span>
+                </p>
+              </div>
 
-            
-            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-6 rounded-full pointer-events-none"
-              style={{ background: "rgba(59,130,246,0.1)", filter: "blur(18px)" }} />
 
-           
-            <div className="relative photo-float" style={{ width: "100%" }}>
-              <img
-                src="/myImage.png"
-                alt="Yoni.G"
-                draggable={false}
-                className="w-full object-contain select-none"
-                style={{
-                  maxHeight: "clamp(200px, 40vw, 460px)",
-                  filter: "drop-shadow(0 8px 28px rgba(37,99,235,0.18))",
-                  ...fly(60),
-                }}
-              />
-            </div>
- 
-            <div className="absolute left-[-12px] top-[32%] rounded-xl px-3 py-2 shadow-xl"
-              style={{
-                background: "#080e1f",
-                border: "1px solid rgba(37,99,235,0.2)",
-                ...flyLeft(700),
-              }}>
-              <p className="font-black text-blue-400 text-sm leading-none"
-                style={{ fontFamily: "'DM Serif Display', serif" }}>1+</p>
-              <p className="text-slate-500 text-[9px] mt-0.5 tracking-wider"
-                style={{ fontFamily: "'DM Sans', sans-serif" }}>Yrs Dev</p>
-            </div>
+              <div style={fly(260)}>
+                <p className="text-slate-400 leading-relaxed max-w-[420px] text-sm"
+                  style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                  I'm a Full Stack Developer with 1 year of expirence and I also worked as a junior IT support specialist. I take my time to learn new Technology get update with the one i already am familliar with .
+                </p>
+              </div>
 
-            
-            <div className="absolute right-[-12px] bottom-[30%] rounded-xl px-3 py-2 shadow-xl"
-              style={{
-                background: "#080e1f",
-                border: "1px solid rgba(37,99,235,0.2)",
-                ...flyRight(820),
-              }}>
-              <p className="font-black text-blue-400 text-sm leading-none"
-                style={{ fontFamily: "'DM Serif Display', serif" }}>5+</p>
-              <p className="text-slate-500 text-[9px] mt-0.5 tracking-wider"
-                style={{ fontFamily: "'DM Sans', sans-serif" }}>Projects</p>
+
+              <div style={fly(340)} className="flex flex-wrap gap-2">
+                {[
+                  { label: "React & Node.js", icon: "⚛️" },
+                  { label: "Bot Development", icon: "🤖" },
+                  { label: "Data Analyst", icon: "📊" },
+                  { label: "Fast Learner", icon: "🚀" },
+                ].map(({ label, icon }) => (
+                  <span key={label}
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-[11px] font-medium"
+                    style={{
+                      background: "rgba(15,23,42,0.7)",
+                      border: "1px solid rgba(51,65,85,0.5)",
+                      color: "#94a3b8",
+                      fontFamily: "'DM Sans', sans-serif",
+                    }}>
+                    <span>{icon}</span>{label}
+                  </span>
+                ))}
+              </div>
+
+
+              <div style={fly(420)} className="flex flex-wrap gap-3">
+                <button
+                  onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+                  className="cursor-pointer"
+                  style={{
+                    padding: "10px 22px", borderRadius: 10,
+                    background: "#2563eb",
+                    color: "#fff", fontFamily: "'DM Sans', sans-serif",
+                    fontWeight: 600, fontSize: "0.85rem", letterSpacing: "0.02em",
+                    border: "none",
+                    boxShadow: "0 4px 20px rgba(37,99,235,0.3)",
+                    transition: "background 200ms, transform 150ms",
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.background = "#1d4ed8"}
+                  onMouseLeave={e => e.currentTarget.style.background = "#2563eb"}
+                  onMouseDown={e => e.currentTarget.style.transform = "scale(0.97)"}
+                  onMouseUp={e => e.currentTarget.style.transform = "scale(1)"}
+                >
+                  Let's Talk →
+                </button>
+                <button
+                  onClick={() => document.getElementById("works")?.scrollIntoView({ behavior: "smooth" })}
+                  className="cursor-pointer"
+                  style={{
+                    padding: "10px 22px", borderRadius: 10,
+                    background: "transparent",
+                    color: "#94a3b8", fontFamily: "'DM Sans', sans-serif",
+                    fontWeight: 500, fontSize: "0.85rem",
+                    border: "1px solid rgba(51,65,85,0.6)",
+                    transition: "border-color 200ms, color 200ms",
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(96,165,250,0.45)"; e.currentTarget.style.color = "#e2e8f0"; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(51,65,85,0.6)"; e.currentTarget.style.color = "#94a3b8"; }}
+                >
+                  View My Work
+                </button>
+              </div>
+
             </div>
           </div>
         </div>
 
-        
-        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5"
+        {/* ── image pinned to the bottom (absolute, bottom-0) ── */}
+        <div
+          className="absolute z-[1] bottom-0 right-1/6 translate-x-1/2 md:left-auto md:translate-x-0 md:left-[15%]"
+          style={{ width: "clamp(300px, 75vw, 550px)" }}
+        >
+          <div className="relative photo-float" style={{ width: "100%" }}>
+            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[70%] h-8 rounded-full blur-2xl"
+              style={{ background: "radial-gradient(ellipse, rgba(37,99,235,0.28), transparent 70%)" }} />
+          <img
+  src="/myImage.png"
+  alt="Yoni.G"
+  draggable={false}
+  className="relative right-1/8 lg:right-0 w-full object-contain select-none rounded-2xl cursor-pointer max-h-[450px] lg:max-h-[clamp(600px,65vh,650px)]"
+  style={{
+    filter: "drop-shadow(0 0 15px rgba(96,165,250,0.3))",
+    transition: "filter 6s ease",
+    ...fly(60),
+  }}
+  onMouseEnter={e => e.currentTarget.style.filter = "drop-shadow(0 0 30px rgba(96,165,250,0.6)) drop-shadow(0 0 60px rgba(96,165,250,0.4))"}
+  onMouseLeave={e => e.currentTarget.style.filter = "drop-shadow(0 0 15px rgba(96,165,250,0.3))"}
+/>
+          </div>
+        </div>
+
+        {/* ── scroll cue (desktop only — mobile's bottom space is taken by the image) ── */}
+        <div className="hidden md:flex absolute bottom-5 left-1/2 -translate-x-1/2 z-10 flex-col items-center gap-1.5"
           style={fly(880)}>
           <span className="text-[9px] tracking-[0.3em] uppercase text-slate-600"
             style={{ fontFamily: "'DM Sans', sans-serif" }}>scroll</span>
@@ -384,6 +378,34 @@ export default function Home() {
             50%      { transform: translateY(-9px); }
           }
           .photo-float { animation: float 6s ease-in-out infinite; }
+
+          .trace-flow {
+            stroke-dasharray: 5 13;
+            animation-name: traceFlow;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+          }
+          @keyframes traceFlow {
+            to { stroke-dashoffset: -360; }
+          }
+
+          .orb-drift-a { animation: orbDriftA 15s ease-in-out infinite; }
+          @keyframes orbDriftA {
+            0%, 100% { transform: translate(0, -50%) scale(1); }
+            50%       { transform: translate(-26px, calc(-50% + 18px)) scale(1.08); }
+          }
+
+          .orb-drift-b { animation: orbDriftB 17s ease-in-out infinite; }
+          @keyframes orbDriftB {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50%       { transform: translate(22px, -14px) scale(1.1); }
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+            .photo-float, .orb-drift-a, .orb-drift-b, .trace-flow {
+              animation: none !important;
+            }
+          }
         `}</style>
       </section>
     </>

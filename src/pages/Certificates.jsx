@@ -22,15 +22,23 @@ const certs = [
   {
     id: 1,
     src: "certificate1.png",
-    title: "AI carrer essentials",
+    title: "AI Career Essentials",
     issuer: "ALX",
     date: "5th May 2026",
     accent: "#3b82f6",
   },
   {
+    id: 5,
+    src: "certificate5.jpg",
+    title: "Hackathon Participation",
+    issuer: "Kuriftu, WeVa Sphere",
+    date: "6th 2026",
+    accent: "#06b6d4",
+  },
+  {
     id: 2,
     src: "certificate2.png",
-    title: "Proffesional Academy",
+    title: "Professional Academy",
     issuer: "ALX",
     date: "26th May 2026",
     accent: "#8b5cf6",
@@ -43,18 +51,16 @@ const certs = [
     date: "29th May 2026",
     accent: "#06b6d4",
   },
-   {
+  {
     id: 4,
     src: "certificate4.png",
     title: "Digital Marketing",
     issuer: "Hubspot",
-    date: "13th  2026",
+    date: "13th 2026",
     accent: "#06b6d4",
-  }
-
+  },
 ];
 
- 
 function CertCard({ cert, index, visible, onOpen }) {
   const cardRef = useRef(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
@@ -103,9 +109,11 @@ function CertCard({ cert, index, visible, onOpen }) {
         onClick={() => onOpen(cert)}
         style={{
           position: "relative",
-          borderRadius: 20,
+          borderRadius: 22,
           cursor: "pointer",
           transformStyle: "preserve-3d",
+          /* ── slightly larger card: min 310px wide, auto height ── */
+          minWidth: 310,
           transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${hovered ? 1.02 : 1})`,
           transition: hovered
             ? "transform 120ms ease-out, box-shadow 300ms ease"
@@ -120,14 +128,14 @@ function CertCard({ cert, index, visible, onOpen }) {
       >
         {/* glare overlay */}
         <div style={{
-          position: "absolute", inset: 0, zIndex: 4, borderRadius: 20, pointerEvents: "none",
+          position: "absolute", inset: 0, zIndex: 4, borderRadius: 22, pointerEvents: "none",
           background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(255,255,255,${glare.opacity * 1.5}) 0%, transparent 70%)`,
           transition: hovered ? "none" : "opacity 500ms ease",
         }} />
 
         {/* accent top bar */}
         <div style={{
-          position: "absolute", top: 0, left: 0, right: 0, height: 4, zIndex: 3,
+          position: "absolute", top: 0, left: 0, right: 0, zIndex: 3,
           background: `linear-gradient(90deg, ${cert.accent} 0%, ${cert.accent}aa 40%, transparent 100%)`,
           opacity: hovered ? 1 : 0.6,
           transition: "opacity 300ms ease, height 300ms ease",
@@ -147,7 +155,8 @@ function CertCard({ cert, index, visible, onOpen }) {
         {/* image */}
         <div style={{
           position: "relative", zIndex: 2,
-          padding: "1.25rem 1.25rem 0",
+          /* ── slightly more generous padding ── */
+          padding: "1.4rem 1.4rem 0",
           transformStyle: "preserve-3d",
           transform: "translateZ(15px)",
         }}>
@@ -178,35 +187,44 @@ function CertCard({ cert, index, visible, onOpen }) {
         {/* text info */}
         <div style={{
           position: "relative", zIndex: 2,
-          padding: "1rem 1.25rem 1.25rem",
+          /* ── roomier text area ── */
+          padding: "1.1rem 1.4rem 1.4rem",
           transformStyle: "preserve-3d",
           transform: "translateZ(8px)",
         }}>
           <p style={{
-            fontFamily: "'DM Serif Display', serif",
-            fontSize: "1rem", fontWeight: 400,
-            color: "#f8fafc", margin: "0 0 6px",
-            lineHeight: 1.35,
-            letterSpacing:"0.05em"
+            fontFamily: "'Nunito', sans-serif",
+            fontSize: "0.95rem",
+            fontWeight: 400,           /* was 400 on serif — Nunito 400 reads light & clean */
+            color: "#f1f5f9",
+            margin: "0 0 8px",
+            lineHeight: 1.5,
+            letterSpacing: "0.06em",  /* breathing room between letters */
           }}>
             {cert.title}
           </p>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
             <p style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: "11px", color: "#94a3b8", margin: 0,
-              fontWeight: 500,
+              fontFamily: "'Nunito', sans-serif",
+              fontSize: "11.5px",
+              fontWeight: 300,          /* very light — airy issuer label */
+              color: "#94a3b8",
+              margin: 0,
+              letterSpacing: "0.08em",
             }}>
               {cert.issuer}
             </p>
             <span style={{
-              fontFamily: "'DM Sans', sans-serif",
+              fontFamily: "'Nunito', sans-serif",
               fontSize: "10px",
+              fontWeight: 400,
               color: cert.accent,
               background: `rgba(${rgb},0.12)`,
               border: `1px solid rgba(${rgb},0.25)`,
-              padding: "3px 9px", borderRadius: 12,
-              fontWeight: 600,
+              padding: "4px 10px",
+              borderRadius: 12,
+              letterSpacing: "0.07em",
+              whiteSpace: "nowrap",
             }}>
               {cert.date}
             </span>
@@ -215,14 +233,15 @@ function CertCard({ cert, index, visible, onOpen }) {
 
         {/* click hint */}
         <div style={{
-          position: "absolute", bottom: 6, right: 14, zIndex: 3,
-          fontFamily: "'DM Sans', sans-serif",
-          fontSize: "9px", letterSpacing: "0.22em",
+          position: "absolute", bottom: 8, right: 16, zIndex: 3,
+          fontFamily: "'Nunito', sans-serif",
+          fontSize: "9px",
+          fontWeight: 400,
+          letterSpacing: "0.28em",
           textTransform: "uppercase",
           color: hovered ? cert.accent : "rgba(71,85,105,0.7)",
           transition: "color 250ms ease, transform 250ms ease",
           transform: hovered ? "translateX(-3px)" : "translateX(0)",
-          fontWeight: 600,
         }}>
           view ↗
         </div>
@@ -258,26 +277,24 @@ function Lightbox({ cert, onClose }) {
       }}
     >
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500&display=swap');
         @keyframes lbIn { from { opacity:0 } to { opacity:1 } }
         @keyframes lbImg { from { opacity:0; transform:scale(0.94) } to { opacity:1; transform:scale(1) } }
         @media (max-width: 640px) {
-          div[style*="padding: 1.5rem"] {
-            padding: 0.75rem !important;
-          }
-          .glow-effect {
-            width: 300px !important;
-            height: 300px !important;
-          }
+          div[style*="padding: 1.5rem"] { padding: 0.75rem !important; }
+          .glow-effect { width: 300px !important; height: 300px !important; }
         }
       `}</style>
 
       {/* glow behind image */}
-      <div style={{
-        position: "absolute", width: 600, height: 600, borderRadius: "50%", pointerEvents: "none",
-        background: `radial-gradient(circle, rgba(${rgb},0.12) 0%, transparent 70%)`,
-        filter: "blur(60px)",
-      }}
-      className="glow-effect" />
+      <div
+        className="glow-effect"
+        style={{
+          position: "absolute", width: 600, height: 600, borderRadius: "50%", pointerEvents: "none",
+          background: `radial-gradient(circle, rgba(${rgb},0.12) 0%, transparent 70%)`,
+          filter: "blur(60px)",
+        }}
+      />
 
       <div
         onClick={(e) => e.stopPropagation()}
@@ -326,17 +343,25 @@ function Lightbox({ cert, onClose }) {
         <div style={{
           position: "absolute", bottom: 0, left: 0, right: 0,
           background: "linear-gradient(to top, rgba(4,8,20,0.95), transparent)",
-          padding: "1.5rem 1.25rem 1rem", zIndex: 2,
+          padding: "1.5rem 1.4rem 1rem", zIndex: 2,
         }}>
           <p style={{
-            fontFamily: "'DM Serif Display', serif",
-            fontSize: "1rem", color: "#f1f5f9", margin: "0 0 2px",
+            fontFamily: "'Nunito', sans-serif",
+            fontSize: "1rem",
+            fontWeight: 400,
+            color: "#f1f5f9",
+            margin: "0 0 4px",
+            letterSpacing: "0.05em",
           }}>
             {cert.title}
           </p>
           <p style={{
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: "11px", color: "#64748b", margin: 0,
+            fontFamily: "'Nunito', sans-serif",
+            fontSize: "11px",
+            fontWeight: 300,
+            color: "#64748b",
+            margin: 0,
+            letterSpacing: "0.07em",
           }}>
             {cert.issuer} · {cert.date}
           </p>
@@ -345,9 +370,12 @@ function Lightbox({ cert, onClose }) {
 
       <p style={{
         position: "absolute", bottom: 20,
-        fontFamily: "'DM Sans', sans-serif",
-        fontSize: "10px", letterSpacing: "0.25em",
-        textTransform: "uppercase", color: "rgba(71,85,105,0.6)",
+        fontFamily: "'Nunito', sans-serif",
+        fontSize: "10px",
+        fontWeight: 300,
+        letterSpacing: "0.28em",
+        textTransform: "uppercase",
+        color: "rgba(71,85,105,0.6)",
       }}>
         click outside or press esc to close
       </p>
@@ -380,6 +408,10 @@ export default function Certificates() {
         paddingTop: "5.5rem", paddingBottom: "5.5rem",
       }}
     >
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500&display=swap');
+      `}</style>
+
       {/* bg */}
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
         <div style={{
@@ -403,7 +435,8 @@ export default function Certificates() {
 
       <div style={{
         position: "relative", zIndex: 1,
-        maxWidth: 1000, margin: "0 auto",
+        maxWidth: 1060,   /* slightly wider to breathe with bigger cards */
+        margin: "0 auto",
         padding: "0 1.5rem",
       }}>
 
@@ -415,16 +448,24 @@ export default function Certificates() {
           marginBottom: "3.5rem",
         }}>
           <p style={{
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: 10, letterSpacing: "0.38em",
-            textTransform: "uppercase", color: "#3b82f6", marginBottom: 10,
+            fontFamily: "'Nunito', sans-serif",
+            fontSize: 10,
+            fontWeight: 400,
+            letterSpacing: "0.42em",
+            textTransform: "uppercase",
+            color: "#3b82f6",
+            marginBottom: 10,
           }}>
             Certificates
           </p>
           <h2 style={{
             fontFamily: "'DM Serif Display', serif",
             fontSize: "clamp(1.8rem, 4.5vw, 3rem)",
-            fontWeight: 900, color: "#fff", lineHeight: 1.1, margin: 0,
+            fontWeight: 900,
+            color: "#fff",
+            lineHeight: 1.15,
+            margin: 0,
+            letterSpacing: "0.02em",
           }}>
             Credentials &<br />
             <span style={{ color: "#60a5fa" }}>achievements.</span>
@@ -434,8 +475,9 @@ export default function Certificates() {
         {/* cards grid */}
         <div style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))",
-          gap: "1.5rem",
+          /* ── minmax bumped from 290 → 310 for slightly larger cards ── */
+          gridTemplateColumns: "repeat(auto-fit, minmax(310px, 1fr))",
+          gap: "1.75rem",
         }}>
           {certs.map((cert, i) => (
             <CertCard

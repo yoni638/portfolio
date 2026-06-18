@@ -101,7 +101,7 @@ const dataAnalytics = [
   { Icon: SiPowerbi,        name: "PowerBI",      color: "#f2c811" },
 ];
 
-function SkillCard({ Icon, name, color, short, visible, delay, from }) {
+function SkillCard({ Icon, name, color, short, visible, delay, from, fixedWidth }) {
   const [hovered, setHovered] = useState(false);
   const rgb = hexToRgb(color);
   const startX = from === "left" ? "-36px" : "36px";
@@ -137,8 +137,12 @@ function SkillCard({ Icon, name, color, short, visible, delay, from }) {
           ? `0 0 28px rgba(${rgb}, 0.1), inset 0 1px 0 rgba(${rgb},0.08)`
           : "inset 0 1px 0 rgba(255,255,255,0.03)",
         cursor: "default",
-        flex: "1 1 80px",
-        minWidth: 80,
+        // Cards that share space with many siblings grow to fill the row.
+        // Cards in small, centered groups (e.g. Data Analytics) keep a fixed,
+        // comfortable width instead of stretching awkwardly on narrow screens.
+        flex: fixedWidth ? "0 0 120px" : "1 1 80px",
+        minWidth: fixedWidth ? undefined : 80,
+        maxWidth: fixedWidth ? 120 : undefined,
       }}
     >
       <div style={{
@@ -169,18 +173,21 @@ function SkillCard({ Icon, name, color, short, visible, delay, from }) {
   );
 }
 
-function CategoryBlock({ label, tag, skills, visible, baseDelay, from, style }) {
+function CategoryBlock({ label, tag, skills, visible, baseDelay, from, style, centerCards }) {
   return (
-    <div style={{
-      background: "rgba(8,14,31,0.7)",
-      border: "1px solid rgba(30,50,90,0.5)",
-      borderRadius: 20,
-      padding: "24px 22px",
-      display: "flex",
-      flexDirection: "column",
-      gap: 16,
-      ...style,
-    }}>
+    <div
+      className="category-block"
+      style={{
+        background: "rgba(8,14,31,0.7)",
+        border: "1px solid rgba(30,50,90,0.5)",
+        borderRadius: 20,
+        padding: "24px 22px",
+        display: "flex",
+        flexDirection: "column",
+        gap: 16,
+        ...style,
+      }}
+    >
       {/* label row */}
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
         <span style={{
@@ -203,9 +210,9 @@ function CategoryBlock({ label, tag, skills, visible, baseDelay, from, style }) 
       </div>
 
       <h3 style={{
-        fontFamily: "'DM Serif Display', serif",
+        fontFamily: "'Nunito', sans-serif",
         fontSize: "1.05rem",
-        fontWeight: 700,
+        fontWeight: 600,
         color: "#cbd5e1",
         margin: 0,
         opacity: visible ? 1 : 0,
@@ -220,6 +227,7 @@ function CategoryBlock({ label, tag, skills, visible, baseDelay, from, style }) 
         display: "flex",
         flexWrap: "wrap",
         gap: "10px",
+        justifyContent: centerCards ? "center" : "flex-start",
       }}>
         {skills.map(({ Icon, name, color, short }, i) => (
           <SkillCard
@@ -231,6 +239,7 @@ function CategoryBlock({ label, tag, skills, visible, baseDelay, from, style }) 
             visible={visible}
             delay={baseDelay + 120 + i * 65}
             from={from}
+            fixedWidth={centerCards}
           />
         ))}
       </div>
@@ -334,7 +343,7 @@ export default function Skills() {
             />
           </div>
 
-          {/* Bottom row: Data Analytics centered */}
+          {/* Bottom row: Data Analytics centered, with its cards centered too */}
           <div style={{
             display: "flex",
             justifyContent: "center",
@@ -347,6 +356,7 @@ export default function Skills() {
               visible={visible}
               baseDelay={340}
               from="left"
+              centerCards
               style={{ width: "100%", maxWidth: "50%" }}
             />
           </div>
@@ -354,6 +364,7 @@ export default function Skills() {
       </div>
 
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
         @media (max-width: 768px) {
           .skills-container {
             display: flex !important;
@@ -366,11 +377,14 @@ export default function Skills() {
           }
           .bottom-row {
             display: flex !important;
-            justifyContent: flex-start !important;
+            justify-content: center !important;
           }
           .bottom-row > div {
             width: 100% !important;
-            maxWidth: 100% !important;
+            max-width: 100% !important;
+          }
+          .category-block {
+            padding: 20px 16px !important;
           }
         }
       `}</style>
