@@ -741,7 +741,7 @@ export default function Works() {
               className="text-sm max-w-xs mx-auto leading-relaxed"
               style={{ fontFamily: "'Nunito', sans-serif", color: "#475569" }}
             >
-              Some of the projects I've worked on. Not all are listed — they will be updated soon.
+              Some of the projects I've worked on. Not all are listed, they will be updated soon.
             </p>
           </div>
 

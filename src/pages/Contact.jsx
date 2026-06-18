@@ -252,7 +252,7 @@ export default function Contact() {
             fontSize: "0.875rem", color: "#475569",
             maxWidth: 360, margin: "0 auto", lineHeight: 1.7,
           }}>
-            Reach out through any channel — I'm quick to respond.
+            Reach out through any channel. I'm quick to respond.
           </p>
         </div>
 
