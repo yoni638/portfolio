@@ -8,7 +8,7 @@ import Certificates from "./pages/Certificates";
 import Works from "./pages/Works";
 import Contact from "./pages/Contact";
 
-const SECTION_IDS = ["home", "about", "skills", "certificates", "works", "contact"];
+const SECTION_IDS = ["home", "about", "skills", "works", "certificates", "contact"];
 
 export default function App() {
   const [activeSection, setActiveSection] = useState("home");
@@ -51,8 +51,8 @@ export default function App() {
         <Home />
         <About />
         <Skills />
-        <Certificates />
         <Works />
+        <Certificates />
         <Contact />
       </main>
       <Footer />

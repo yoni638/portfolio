@@ -157,7 +157,7 @@ export default function About() {
                 style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.925rem", maxWidth: 480 }}
               >
                 I'm <span className="text-white font-semibold">Yonatan Getachew</span> a Computer Science
-              Graduate (class of 2025). I'm currently midway in data analytics and data science courses so that I can benefit myself and others in making a data driven smart decision.
+              Graduate (class of 2025). currently expanding my skills in Data Analytics and Data Science to help businesses and individuals make better decisions through data driven insights.
               </p>
             </FadeIn>
 
@@ -166,8 +166,8 @@ export default function About() {
                 className="text-slate-400 leading-relaxed"
                 style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.9rem", maxWidth: 480 }}
               >
-The things that I can promise to deliver are I can take projects all the way from the concept design to the fully deployed production application, I can deliver a scalable and secure architecture & rapid prototyping and MVPs.
-               </p>
+I deliver end to end solutions, from concept and design to fully deployed production ready applications. My expertise includes building scalable and secure architectures, developing rapid prototypes and MVPs to bring ideas to market quickly.
+              </p>
             </FadeIn>
 
             {/* trait pills */}

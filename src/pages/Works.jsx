@@ -19,7 +19,7 @@ const PROJECTS = [
     ],
     liveUrl: "",
     repoUrl: "",
-    year: "2025",
+    year: "2026",
   },
   {
     id: 2,
@@ -39,7 +39,7 @@ const PROJECTS = [
     title: "Coffee Meet",
     tagline: "A telegram bot for coffee lovers",
     description:
-      "Coffee meet is a telegram bot that aims to meet up new people to share their love for coffee and have a good time.",
+      "Coffee Meet is a telegram bot that aims to meet up new people to share their love for coffee and have a good time.",
     tech: ["php", "MySQL"],
     category: "Bot",
     screenshots: ["coffee.png"],
@@ -200,7 +200,7 @@ function ProjectCard({ project, index, onOpen }) {
       }} />
 
       {/* Screenshot */}
-      <div style={{ position: "relative", width: "100%", paddingBottom: "52%", flexShrink: 0 }}>
+      <div style={{ position: "relative", width: "100%", paddingBottom: "48%", flexShrink: 0 }}>
         <ImgOrPlaceholder
           src={project.screenshots[0]}
           alt={project.title}
@@ -233,8 +233,8 @@ function ProjectCard({ project, index, onOpen }) {
 
       {/* Body */}
       <div style={{
-        padding: "18px 20px 20px", flex: 1,
-        display: "flex", flexDirection: "column", gap: 10,
+        padding: "14px 16px 16px", flex: 1,
+        display: "flex", flexDirection: "column", gap: 8,
         /* ── fix: prevent body from overflowing card ── */
         minWidth: 0, overflow: "hidden", boxSizing: "border-box",
       }}>
@@ -747,7 +747,7 @@ export default function Works() {
 
           <div
             className="projects-grid"
-            style={{ display: "grid", gap: 22 }}
+            style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 20 }}
           >
             {PROJECTS.map((p, i) => (
               <ProjectCard key={p.id} project={p} index={i} onOpen={setActive} />

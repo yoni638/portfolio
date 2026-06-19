@@ -271,7 +271,7 @@ export default function Home() {
               <div style={fly(260)}>
                 <p className="text-slate-400 leading-relaxed max-w-[420px] text-sm"
                   style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                  I'm a Full Stack Developer with 1 year of expirence and I also worked as a junior IT support specialist. I take my time to learn new Technology get update with the one i already am familliar with .
+                 I’m a Full Stack Developer with 1 year of experience and I also worked as a Junior IT Support Specialist. I take my time to learn new technologies and I make sure to stay updated with the ones I already use.
                 </p>
               </div>
 
